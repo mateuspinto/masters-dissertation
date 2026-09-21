@@ -8,7 +8,12 @@ DISSERTATION_PDF := dissertation.pdf
 PRESENTATION_PDF := presentation.pdf
 
 LATEXMK_FLAGS := -pdf -interaction=nonstopmode -halt-on-error -file-line-error
-GS_FLAGS := -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/printer -dNOPAUSE -dQUIET -dBATCH
+# PDFSETTINGS=/printer corrompe o shading dos cantos arredondados dos blocks
+# do beamer (tema CambridgeUS) -- vira uma barra preta sólida em cima do
+# título de cada block/alertblock/exampleblock. /prepress comprime quase
+# igual e preserva o shading intacto (achado ao investigar o mesmo bug nos
+# slides do paper GRSL, que usa este mesmo template).
+GS_FLAGS := -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/prepress -dNOPAUSE -dQUIET -dBATCH
 
 .PHONY: all presentation clean distclean
 
