@@ -1,0 +1,139 @@
+\chapter{Experimental Setup}
+\label{chapter:exp_setup}
+
+As an experimental setup, scenarios with different levels of scarcity of labeled data will be used to evaluate the performance of the trained models. The scenarios include 0.1\%, 1\%, 10\%, and 70\% of the labeled data available in each dataset, with the minor exception that the Brazilian dataset does not present the 0.1\% scenario due to its limited number of labeled samples combined with the separation between training/validation/testing by city, as it was not possible to select 0.1\% of the cities while maintaining at least one sample in each class.
+
+\section{Hardware and Software Used}
+
+The experiments were conducted on an Azure virtual machine provided by \ac{IBGE}. The hardware consists of an AMD EPYC 7V13 processor (Zen 3 architecture) with 48 cores and a base frequency of 2.89 GHz, 448 GiB of RAM, and 2x NVIDIA A100 PCIe 80 GB GPUs, totaling 160 GB of video memory (VRAM). As for the base software, Ubuntu 24.04.2 LTS (Noble Numbat) distribution was used with Linux kernel version 6.14.0-1014-azure and NVIDIA driver 550.163.01. It is important to mention that this machine is well above the minimum required to run the experiments, so it was possible to run several experiments in parallel, saving a lot of development time.
+
+Some less common libraries were used: hyperparameter search was performed by Optuna, and Intel's high-performance Scikit Learn patch, Scikit Learn Intelex, was used. Regarding the versions of all software, all experiments were run within a container orchestrated by Docker 28.3.0, build 38b7060. The image used as a base was the official Pytorch image, version 2.4.0-cuda12.4-cudnn9-devel. The other important packages were their respective versions: AgriGEE.lite 2.0.14, LightGBM 4.6.0, Optuna 4.6.0, Scikit Learn==1.7.2, and Scikit Learn Intelex 2025.10.0.
+
+
+\section{Shallow Learning hyperparameter search space}
+
+A hyperparameter search was performed for all SL model experiments, including \ac{ORDER} \ac{GMM}. This search was performed using the Tree-structured Parzen Estimator (TPE) \citep{watanabe2025treestructuredparzenestimatorunderstanding}, a sequential Bayesian optimization approach that constructs a probabilistic model of the objective function based on the history of past evaluations. The TPE works by modeling separate densities for good and bad performance configurations, guiding the search to regions of parameter space with a higher probability of maximizing the evaluation metric. For each experiment, the search process was configured with a limit of 100 trials, which is the minimum recommended by the Optuna library used.
+
+For the \ac{SVM} model, the search strategy focused on the balance between regularization and kernel. The penalty parameter  was sampled from a log-uniform distribution within the interval. The hyperplane topology was varied through categorical selection between linear, RBF, and polynomial kernels; for the latter two, the coefficient alternated between the ``auto'' and ``scale'' scales, while the degree of the polynomial was adjusted by integer values between 2 and 5. Class balancing was used to deal with the imbalance commonly found in crop classification datasets.
+
+As for \ac{RF}, the hyperparameter space explored both the number of \ac{DT}s and the pruning of individual trees. The number of estimators was evaluated in the range from 80 to 350, and the maximum depth between trees between infinity, 5, and 10. The granularity of the trees was chosen based on the criteria of node division (between 2 and 10) and leaf composition (between 1 and 4), also considering different strategies for the selection of max features attributes and the activation or not of bootstrap sampling.
+
+The configuration of \ac{ORDER}'s \ac{GMM} is: the number of mixtures/groups was sought linearly between 1 and 10, while the covariance matrix was tested under the geometries ``full'', ``tied'', ``diag'', and ``spherical''. To ensure numerical stability during estimation, a regularization term was applied to the covariance diagonal, whose values were extracted from a logarithmic scale between 0.000001 and 0.001.
+
+Unlike previous models, the \ac{LGBM} classifier did not search for hyperparameters. Early Stopping from the library was used, where training is automatically interrupted if there is no improvement in the evaluation metric on the validation set after a certain number of iterations, defined as 50. Thus, the architecture was instantiated with fixed base parameters -- 500 DT, maximum depth of 5, and balanced weights (similar to SVM) -- with the number of iterations and overfitting prevention determined by dynamic validation monitoring, very similar to what happens in DL model training.
+
+\section{Deep Learning hyperparameters and training strategies}
+
+An attempt was made to standardize the training hyperparameters for all \ac{DL} model training, with some minor variations explained in this section. The weights of the DL models were optimized using the AdamW algorithm \citep{loshchilov2019decoupledweightdecayregularization}, a well-established variant of the Adam \citep{kingma2017adammethodstochasticoptimization} optimizer that decouples the implementation of weight decay from adaptive gradient optimization, providing more efficient and stable L2 regularization. The standard weight decay of 0.05 was used for all training sessions. Furthermore, PyTorch WeightedRandomSampler\footnote{Pytorh WeightedRandomSampler API Documentation: \url{https://docs.pytorch.org/docs/stable/data.html\#torch.utils.data.WeightedRandomSampler}} was used to handle class imbalance, using weights as the inverse of the class ratio. This way, each batch has its samples more or less balanced across all supervised trainings, including those from ConfidNet.
+
+The learning rate control followed a dynamic schedule consisting of two distinct phases. In the first 10 training epochs, the learning rate is incremented linearly, starting from 0 until reaching the base rate of 0.0001. This step is very important to stabilize the initial gradients, especially in models based on Transformers and Mamba, which tend to predict only the majority class when they do not go through this initial step, called warmup. As for the other models, such warmup can at most be seen as a loss of processing cycles. After the warmup period, the learning rate decreases following a cosine curve until it reaches zero at the end of the maximum number of epochs, theoretically allowing for smooth convergence at the local minima of the loss function.
+
+The duration of training varied depending on the task. For the self-supervised pre-training stages, the maximum limit was set at 400 epochs (passed through the training dataset). For fine-tuning and supervised training from scratch, the limit was set at 100 epochs for routines with 70\% and 10\% of the training data, and 200 for few-shot routines with scarcer data (1\% and 0.1\%).
+
+To mitigate overfitting and optimize the use of computational time, two monitoring strategies based on the validation set were used: Early Stopping, in which training is automatically interrupted if the loss function in the validation set does not improve for a patience period set at 10 consecutive epochs (20 for pre-training). And Model Checkpointing, in which at the end of the training process (either by the end of the epochs or by the activation of Early Stopping), the model weights are reverted to the state corresponding to the epoch where the lowest loss function was obtained in the validation set.
+
+The models were trained using mixed precision to reduce VRAM usage and speed up processing - mainly because we use GPUs that allow BF16 mixed precision, with a batch size of 2048 samples (or 8192 for all pre-trainings).
+
+\section{Evaluation Metrics}
+
+A set of metrics consolidated in the literature was used. It is important to note that, in multi-class scenarios such as the one presented, traditional binary metrics (such as Precision, Recall, and F1-Score) require aggregation strategies to provide a single indicator of overall performance. Common strategies are:
+
+\begin{itemize}
+    \item \textbf{Micro Average:} Calculates metrics globally by summing the total true positives, false negatives, and false positives of all classes. It is useful when evaluating overall performance in individual instances, as it is influenced by majority classes.
+    \item \textbf{Macro Average:} Calculates the metric for each class individually and then extracts the unweighted arithmetic mean. This approach treats all classes equally, penalizing models that perform poorly in minority classes.
+    \item \textbf{Weighted Average:} Calculates the metric for each class and extracts the average weighted by the support (number of actual instances) of each class. This strategy takes into account data imbalance and was the most used in the proposed problem, since crops with more samples are usually those with greater economic interest and, consequently, those with greater importance in the evaluation.
+\end{itemize}
+
+
+\textbf{Confusion Matrix - } The confusion matrix provides a tabular view of the model's performance, contrasting the predicted classes with the actual classes. The Table \ref{tab:confusion_matrix} illustrates the structure for a binary problem, although it can be extended to multiclass problems by simply adding a row and column for each new class.
+
+\begin{table}[ht]
+\centering
+\caption{Structure of a binary confusion matrix.}
+\begin{tabular}{|c|c|c|}
+\hline
+\cellcolor{white} & \textbf{Actually Positive (1)} & \textbf{Actually Negative (0)} \\
+\hline
+\textbf{Predicted Positive (1)} & True Positive (TP) & False Positive (FP) \\
+\hline
+\textbf{Predicted Negative (0)} & False Negative (FN) & True Negative (TN) \\
+\hline
+\end{tabular}
+\label{tab:confusion_matrix}
+\end{table}
+
+\textbf{Accuracy - } Accuracy measures the overall proportion of correct predictions relative to the total number of samples.
+
+\begin{equation}
+\text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}
+\end{equation}
+
+\textbf{Precision - } Precision assesses the quality of positive predictions, indicating how many of the items classified as positive are actually positive.
+
+\begin{equation}
+\text{Precision} = \frac{TP}{TP + FP}
+\end{equation}
+
+\textbf{Recall (Sensitivity) - } Recall (or Sensitivity) measures the model's ability to correctly identify all true positive instances.
+
+\begin{equation}
+\text{Recall} = \frac{TP}{TP + FN}
+\end{equation}
+
+\textbf{Specificity - } Specificity measures the model's ability to correctly identify actual negative instances, indicating how well the model avoids false positives.
+
+\begin{equation}
+\text{Specificity} = \frac{TN}{TN + FP}
+\end{equation}
+
+\textbf{F1-Score - } The F1-Score is the harmonic mean between Precision and Recall, penalizing extreme values (such as a model that predicts only one class), and is particularly useful in unbalanced datasets.
+
+\begin{equation}
+\text{F1-Score} = 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}
+\end{equation}
+
+\textbf{Geometric Mean Score (G-Mean) - } The Geometric Mean (G-Mean) assesses the balance between performance in the majority and minority classes, calculated as the square root of the product of Sensitivity and Specificity.
+
+\begin{equation}
+\text{G-Mean} = \sqrt{\text{Sensitivity} \times \text{Specificity}}
+\end{equation}
+
+\textbf{Matthews Correlation Coefficient (MCC) - } The Matthews Correlation Coefficient is a robust metric for imbalanced datasets, as it takes into account the four components of the confusion matrix, returning a value between -1 and +1.
+
+\begin{equation}
+\text{MCC} = \frac{TP \cdot TN - FP \cdot FN}{\sqrt{(TP + FP)(TP + FN)(TN + FP)(TN + FN)}}
+\end{equation}
+
+\textbf{Area Under the ROC Curve (AUC-ROC) - } AUC-ROC represents the probability that the model will classify a random positive example with a higher score than a random negative example. It is derived from the relationship between the True Positive Rate (TPR) and the False Positive Rate (FPR).
+
+\begin{equation}
+\text{TPR} = \frac{TP}{TP + FN}, \quad \text{FPR} = \frac{FP}{FP + TN}
+\end{equation}
+
+\begin{equation}
+\text{AUC-ROC} = \int_{0}^{1} \text{TPR}(\text{FPR}) \, d(\text{FPR})
+\end{equation}
+
+\textbf{AUPR-Error - } The area under the Precision-Recall curve (AUPR) with a focus on error is often used in anomaly detection or OOD (Out-of-Distribution). Here, the unknown class is treated as the target class for calculating precision and recall.
+
+\begin{equation}
+\text{AUPR}_{\text{Error}} = \int_{0}^{1} \text{Precision}_{Neg}(\text{Recall}_{Neg}) \, d(\text{Recall}_{Neg})
+\end{equation}
+
+\textbf{AUPR-Success - } AUPR-Success refers to the standard metric of area under the Precision-Recall curve, where the known class is the target of interest.
+
+\begin{equation}
+\text{AUPR}_{\text{Success}} = \int_{0}^{1} \text{Precision}_{Pos}(\text{Recall}_{Pos}) \, d(\text{Recall}_{Pos})
+\end{equation}
+
+\textbf{FPR at N\% TPR - } This metric evaluates the robustness of the model at a specific security operating point. It measures the False Positive Rate (FPR) required to achieve at least $N\%$ True Positive Rate (TPR) (commonly $N=95\%$).
+
+\begin{equation}
+\text{FPR}@N\%\text{TPR} = \text{FPR}(\tau) \quad \text{,} \quad \text{TPR}(\tau) = \frac{N}{100}
+\end{equation}
+
+\textbf{Mean Squared Error (MSE) - } The Mean Squared Error is a metric used in regression, and measures the average of the squares of the differences between the predicted values (probabilities or regression values) and the actual values. In this work, it is used to evaluate the performance of the reconstruction pre-training.
+
+\begin{equation}
+\text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2
+\end{equation}

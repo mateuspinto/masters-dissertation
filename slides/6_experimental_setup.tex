@@ -1,0 +1,25 @@
+\section{Experimental Setup}
+\label{sec:06:setup}
+
+\begin{frame}{Experimental Setup: Evaluation Scenarios \& Models}
+    \begin{block}{Data Scarcity Regimes}
+        To evaluate model robustness and the impact of Self-Supervised Learning, we simulated different label availability scenarios: \textbf{70\%} (traditional regime), \textbf{10\%}, \textbf{1\%}, and \textbf{0.1\%} (\textit{few-shot} regimes) of the training data \textbf{(RQ2)}.
+    \end{block}
+
+    \vspace{0.2cm}
+
+    \begin{block}{Training Details}
+        DL models were optimized using \textbf{AdamW}\footnote[1]{\url{https://arxiv.org/abs/1711.05101}} with a cosine annealing learning rate scheduler and Early Stopping. Conversely, SL models underwent Tree-structured Parzen Estimator\footnote[2]{\url{https://arxiv.org/abs/2304.11127}} hyperparameter search.
+    \end{block}
+\end{frame}
+
+\begin{frame}{Experimental Setup: Anomaly Detection (ORDER)}
+    \begin{block}{Confidence Estimation Baselines}
+        To evaluate the proposed \textbf{ORDER} \textbf{(RQ5)} method in detecting classification failures, we established two main baselines:
+        \begin{itemize}
+            \item \textbf{MCP (Maximum Class Probability):} The standard Softmax confidence.
+            \item \textbf{ConfidNet:} An auxiliary neural network specifically trained to predict the True Class Probability (TCP) of the main classifier.
+        \end{itemize}
+    \end{block}
+
+\end{frame}

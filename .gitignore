@@ -1,0 +1,37 @@
+# LaTeX/Overleaf build artifacts
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.lof
+*.lot
+*.toc
+*.out
+*.synctex.gz
+*.nav
+*.snm
+*.vrb
+*.run.xml
+*.xdv
+*.dvi
+*.ps
+*.idx
+*.ind
+*.ilg
+
+# Compiled PDFs (regenerate with `make` / `make presentation`)
+main_paper.pdf
+main_presentation.pdf
+main_seminarios_presentation.pdf
+dissertation.pdf
+presentation.pdf
+
+# LLM-friendly full-text export (release asset only, not versioned)
+dissertation-llm.md
+
+# Editor/OS cruft
+.DS_Store
+Thumbs.db

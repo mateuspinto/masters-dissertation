@@ -1,0 +1,212 @@
+\setcitestyle{super}
+\begin{figure*}[!ht]
+    \centering
+    \caption{Proposed taxonomy for Deep Learning Remote Sensing related works.}
+    \begin{tikzpicture}[
+        tax_node/.style={rectangle, draw=gray!60, fill=gray!15, very thick, minimum size=5mm},align=center]
+        
+        \node (pic) at (0, 0) {\includegraphics[clip,trim=0in -1in 0in 0in,width=\currprop]{figures/4_related_works/taxonomy/taxonomy.pdf}};
+        
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % Parcel Segmentation.
+        
+        \node (parcel_conv1) at (\wparcelconv, \hfir) 
+        {\refsize \cite{xu2022delineation}};
+        \node (parcel_conv2) at (\wparcelconv, \hsec) 
+        {\refsize \cite{xie2023edge}};
+        \node (parcel_conv3) at (\wparcelconv, \hthi) 
+        {\refsize \cite{zhang2023novel}};
+        \node (parcel_conv4) at (\wparcelconv, \hfou) 
+        {\refsize \cite{waldner2020deep}};
+        
+        \node (parcel_mt1) at (\wparcelmt, \hfir) 
+        {\refsize \cite{li2023using}};
+        \node (parcel_mt2) at (\wparcelmt, \hsec) 
+        {\refsize \cite{yan2024tsanet}};
+        \node (parcel_mt3) at (\wparcelmt, \hthi) 
+        {\refsize \cite{10664585}};
+        \node (parcel_mt4) at (\wparcelmt, \hfou) 
+        {\refsize \cite{zhao2023fastsegment}};
+        \node (parcel_mt5) at (\wparcelmt, \hfif) 
+        {\refsize \cite{10644049}};
+        
+        \node (parcel_ssl1) at (\wparcelssl, \hfir) 
+        {\refsize \cite{calhoun2022self}};
+        
+        \node (parcel_other1) at (\wparcelother, \hfir) 
+        {\refsize \cite{huang2022unsupervised}};
+        \node (parcel_other2) at (\wparcelother, \hsec) 
+        {\refsize \cite{osco2023segment}};
+        \node (parcel_other3) at (\wparcelother, \hthi) 
+        {\refsize \cite{kerner2024multi}};
+
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % Crop Mapping.
+        
+        \node (mapping_conv1) at (\wmappingconv, \hfir) 
+        {\refsize \cite{yaramasu2020pre}};
+        \node (mapping_conv2) at (\wmappingconv, \hsec) 
+        {\refsize \cite{xu2020deepcropmapping}};
+        \node (mapping_conv3) at (\wmappingconv, \hthi) 
+        {\refsize \cite{gallo2021sentinel}};
+        \node (mapping_conv4) at (\wmappingconv, \hfou) 
+        {\refsize \cite{farmonov2023crop}};
+        \node (mapping_conv5) at (\wmappingconv, \hfif) 
+        {\refsize \cite{gallo2022in_season}};
+        
+        \node (mapping_ssl1) at (\wmappingssl, \hfir) 
+        {\refsize \cite{yuan2020self}};
+        \node (mapping_ssl2) at (\wmappingssl, \hsec) 
+        {\refsize \cite{yuan2022sits}};
+        \node (mapping_ssl3) at (\wmappingssl, \hthi)
+        {\refsize \cite{xu2024self}};
+
+        \node (mapping_other1) at (\wmappingother, \hfir)
+        {\refsize \cite{XU2021112599}};
+        \node (mapping_other2) at (\wmappingother, \hsec) 
+        {\refsize \cite{mena2023comparative}};
+        \node (mapping_other3) at (\wmappingother, \hthi) 
+        {\refsize \cite{abbas2023towards}};
+        \node (mapping_other4) at (\wmappingother, \hfou) 
+        {\refsize \cite{russwurm2023end}};
+        \node (mapping_other5) at (\wmappingother, \hfif) 
+        {\refsize \cite{mirzaei2023enhancing}};
+        
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % Crop Yielding.
+        
+        \node (yielding_shallow1) at (\wyieldshallow, \hfir) 
+        {\refsize \cite{huber2022extreme}};
+        \node (yielding_shallow2) at (\wyieldshallow, \hsec) 
+        {\refsize \cite{cheng2022wheat}};
+        \node (yielding_shallow3) at (\wyieldshallow, \hthi) 
+        {\refsize \cite{sabo2023deeper}};
+        \node (yielding_shallow4) at (\wyieldshallow, \hfou) 
+        {\refsize \cite{goel2024crop}};
+        
+        \node (yielding_conv1) at (\wyieldconv, \hfir) 
+        {\refsize \cite{lu2024goa}};
+        \node (yielding_conv2) at (\wyieldconv, \hsec) 
+        {\refsize \cite{huber2024leveraging}};
+        
+        \node (yielding_lstm1) at (\wyieldlstm, \hfir) 
+        {\refsize \cite{gavahi2021deepyield}};
+        \node (yielding_lstm2) at (\wyieldlstm, \hsec) 
+        {\refsize \cite{jeong2022predicting}};
+        \node (yielding_lstm3) at (\wyieldlstm, \hthi) 
+        {\refsize \cite{lang2023integrating}};
+        
+        \node (yielding_ssl1) at (\wyieldssl, \hfir) 
+        {\refsize \cite{lin2023mmst}};
+        
+        \node (yielding_other1) at (\wyieldother, \hfir) 
+        {\refsize \cite{ma2021multi}};
+        \node (yielding_other2) at (\wyieldother, \hsec) 
+        {\refsize \cite{liu2022rice}};
+        \node (yielding_other3) at (\wyieldother, \hthi) 
+        {\refsize \cite{ilyas2023automated}};
+        
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % LULC.
+        
+        \node (lulc_shallow1) at (\wlulcshallow, \hfir) 
+        {\refsize \cite{abdi2020land}};
+        \node (lulc_shallow2) at (\wlulcshallow, \hsec) 
+        {\refsize \cite{dou2024large}};
+        
+        \node (lulc_conv1) at (\wlulcconv, \hfir) 
+        {\refsize \cite{CNN_sun2021supervised}};
+        \node (lulc_conv2) at (\wlulcconv, \hsec) 
+        {\refsize \cite{CNN_xu2022land}};
+        \node (lulc_conv3) at (\wlulcconv, \hthi) 
+        {\refsize \cite{CNN_zhan2023multi}};
+        \node (lulc_conv4) at (\wlulcconv, \hfou) 
+        {\refsize \cite{CNN_zhao2022cnn}};
+        \node (lulc_conv5) at (\wlulcconv, \hfif) 
+        {\refsize \cite{AT_zhu2021spectral}};
+        \node (lulc_conv6) at (\wlulcconv, \hsix) 
+        {\refsize \cite{farmonov2023crop}};
+        \node (lulc_conv7) at (\wlulcconv, \hsev) 
+        {\refsize \cite{AT_zheng2022rotation}};
+        
+        \node (lulc_transf1) at (\wlulctransf, \hfir) 
+        {\refsize \cite{TRAN_sun2022spectral}};
+        \node (lulc_transf2) at (\wlulctransf, \hsec) 
+        {\refsize \cite{yao2023extended}};
+        
+        \node (lulc_ssl1) at (\wlulcssl, \hfir) 
+        {\refsize \cite{tarasiou2022embeddingearthselfsupervisedcontrastive}};
+        \node (lulc_ssl2) at (\wlulcssl, \hsec) 
+        {\refsize \cite{moore2023selfsupervisedapproachlandcover}};
+        \node (lulc_ssl3) at (\wlulcssl, \hthi) 
+        {\refsize \cite{calhoun2022self}};
+        \node (lulc_ssl4) at (\wlulcssl, \hfou) 
+        {\refsize \cite{moore2023selfsupervisedapproachlandcover}};
+        \node (lulc_ssl5) at (\wlulcssl, \hfif) 
+        {\refsize \cite{XUE2025110959}};
+
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % Change Detection.
+        
+        \node (change_conv1) at (\wchangeconv, \hfir) 
+        {\refsize \cite{gao2019change}};
+        \node (change_conv2) at (\wchangeconv, \hsec) 
+        {\refsize \cite{li2021combined}};
+        \node (change_conv3) at (\wchangeconv, \hthi) 
+        {\refsize \cite{song2022csanet}};
+        \node (change_conv4) at (\wchangeconv, \hfou) 
+        {\refsize \cite{ye2023adjacent}};
+        \node (change_conv5) at (\wchangeconv, \hfif) 
+        {\refsize \cite{miao2023snunet3+}};
+        \node (change_conv6) at (\wchangeconv, \hsix) 
+        {\refsize \cite{huang2023smads}};
+        
+        \node (change_transf1) at (\wchangetransf, \hfir) 
+        {\refsize \cite{chen2021remote}};
+        \node (change_transf2) at (\wchangetransf, \hsec) 
+        {\refsize \cite{yan2023transy}};
+        \node (change_transf3) at (\wchangetransf, \hthi) 
+        {\refsize \cite{shafique2023ssvit}};
+        \node (change_transf4) at (\wchangetransf, \hfou) 
+        {\refsize \cite{zhang2023multi}};
+        \node (change_transf5) at (\wchangetransf, \hfif) 
+        {\refsize \cite{tang2024siamese}};
+        \node (change_transf6) at (\wchangetransf, \hsix) 
+        {\refsize \cite{chen2024visiontwinnet}};
+        
+        \node (change_gen1) at (\wchangegen, \hfir) 
+        {\refsize \cite{du2019unsupervised}};
+        \node (change_gen2) at (\wchangegen, \hsec) 
+        {\refsize \cite{tang2021unsupervised}};
+        
+        \node (change_ssl1) at (\wchangessl, \hfir) 
+        {\refsize \cite{tao2023tov}};
+        \node (change_ssl2) at (\wchangessl, \hsec) 
+        {\refsize \cite{feng2024feature}};
+        
+        \node (change_other1) at (\wchangeother, \hfir) 
+        {\refsize \cite{10460113}};
+        \node (change_other2) at (\wchangeother, \hsec) 
+        {\refsize \cite{hou2019w}};
+        \node (change_other3) at (\wchangeother, \hthi) 
+        {\refsize \cite{du2023concatenated}};
+        \node (change_other4) at (\wchangeother, \hfou) 
+        {\refsize \cite{zhao2023triple}};
+        \node (change_other5) at (\wchangeother, \hfif) 
+        {\refsize \cite{bandara2024ddpmcddenoisingdiffusionprobabilistic}};
+        \node (change_other6) at (\wchangeother, \hsix) 
+        {\refsize \cite{wen2024gcdddpmgenerativechangedetection}};
+        \node (change_other7) at (\wchangeother, \hsev) 
+        {\refsize \cite{jia2024siamesemeetsdiffusionnetwork}};
+        
+    \end{tikzpicture}
+    \fromsurvey{Classification of the selected articles under the proposed categories of the taxonomy presented in this work. Each category can be further divided into more refined groups according to the methods' characteristics. Each method may fall under more than one group, as they are not mutually exclusive.}
+    \label{fig:taxonomy_paper_alocation}
+\end{figure*}
+
+\setcitestyle{authoryear, round}

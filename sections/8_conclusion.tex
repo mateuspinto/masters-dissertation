@@ -1,0 +1,59 @@
+\chapter{Conclusion}
+\label{chapter:conclusion}
+
+This work presented and validated, through experimental benchmarks, a lightweight pipeline for classifying agricultural crops at the plot level using SITS. As explained, only public labels were used, both from crop mapping and geometry delineation, as well as sensors from public missions. Therefore, this pipeline can be used for low-cost large-scale agricultural monitoring in large countries like Brazil, potentially helping to identify agricultural activities carried out in environmentally protected areas or with unsustainable management practices, and to provide agricultural credit in a fairer and more accurate way.
+
+The experimental results demonstrated that the lightweight download strategy, implemented in our public library AgriGEE.lite, is effective in converting raw data from optical sensors -- such as Sentinel 2 -- into robust statistical representations such as the median-based pseudo-pixels used, enabling large-scale processing without the need for prohibitive hardware infrastructure. Although the library is specifically developed for Google Earth Engine, the methodology can be adapted to other geospatial data processing platforms. Data curation -- also present in the library -- using filters based on vegetation indices and label consistency, allowed the creation of reliable datasets for Brazil, Texas, and California, mitigating noise even in non-agricultural-specific sources such as MapBiomas Brazil.
+
+Regarding model performance, the DL models, specifically SITS-BERT++ and SITS-Mamba, consistently outperformed the SL models, such as RF and SVM, especially in the Brazilian dataset, which presents greater complexity and higher label noise. However, in regional scenarios with less variability, such as Texas and California, simpler and lighter models remained competitive.
+
+Experiments with SSL confirmed that pre-training strategies, particularly Momentum Contrast (MoCo) and Masked Modeling (MM), appear to be impactful in few shot regimes. In the Brazilian dataset, the use of SSL resulted in gains of up to 40\% in F1 Weighted when only 1\% of the labeled data was available for training.
+
+Finally, the proposed \ac{ORDER} method, an evolution of the GeMOS framework but focused on anomaly detection, visually demonstrated greater separation between correct and incorrect predictions when compared to the ConfidNet baseline or the model itself. 
+
+Considering all experiments, in an unknown scenario, it would be wise to opt for the SITS-BERT++ or SITS-Mamba model with MoCo pretraining using \ac{ORDER} for anomaly detection. The choice between the two models will depend on the available computational resources or other data that can be integrated, since SITS-Mamba is much lighter and faster due to its linear complexity, while SITS-BERT++ offers slightly superior performance. Furthermore, it is noteworthy that the SITS-Mamba showed more consistent performance in different pre-training sessions or even when trained from scratch, demonstrating that the model may be more stable and should be chosen when there is limited time/resources for extensive training and results analysis.
+
+Comparing the metrics reported by Mapbiomas and USDA, it is possible to affirm that the pipeline is capable of reconstructing the agricultural classes of these two rasters, demonstrating the viability of its use for large-scale agricultural monitoring. Furthermore, through other rasters from other countries (such as EUCROPMAP\footnote{EUCROPMAP in Google Earth Engine - \url{https://developers.google.com/earth-engine/datasets/catalog/JRC_D5_EUCROPMAP_V1}} or Canada AAFC Annual Crop\footnote{Canada AAFC Annual Crop Inventory in Google Earth Engine - \url{https://developers.google.com/earth-engine/datasets/catalog/AAFC_ACI}}) and the plot design of VARDA itself or the Fields of the World dataset (see \autoref{sec:labeled_datasets}), it is possible to advance in the attempt to create a global crop classification dataset, a kind of Crops of the World. Such a dataset can serve as a more solid benchmark for crop mapping models.
+
+With these conclusions in mind, it is possible to address the research questions raised in Section \ref{chapter:introduction}:
+
+\begin{enumerate}[label=\textbf{RQ\arabic*:}, leftmargin=*, parsep=1em]
+
+    \item \textbf{To what extent can DCAI strategies - specifically, rigorous filtering of noisy public labels (such as USDA CDL or Mapbiomas) - enable the creation of crop classification datasets and improve the performance of crop classification models?}
+    
+    \begin{itemize}[label=$\hookrightarrow$, leftmargin=2em, topsep=0.5em]
+        \item \textbf{Answer:}
+        DCAI strategy, combined with public cropland rasters, allows the creation of crop classification datasets. However, to estimate the impacts of DCAI performance, further studies would be necessary, especially to correct possible incorrect labels, analyzing which samples were erroneously predicted and erroneously confirmed by ORDER, as these are possible classification errors.
+    \end{itemize}
+
+    \item \textbf{Do SSL pre-training strategies impact embedding generation and offer a significant advantage over supervised models when labels are scarce? If so, which strategy generates the best embeddings?}
+    
+    \begin{itemize}[label=$\hookrightarrow$, leftmargin=2em, topsep=0.5em]
+        \item \textbf{Answer:}
+        Using SSL pretraining is a great option for improving classification metrics in scenarios with a shortage of labels, as demonstrated mainly in experiments with 1\% and 0.1\% of labeled data. Regarding strategies, MoCo stands out for generating good metrics in fine-tuning and with KNN trained directly on the embeddings, and it did not present very poor results in any experiment, which shows that it is a very solid choice.
+    \end{itemize}
+
+    \item \textbf{Is it possible to build a lightweight pipeline that achieves satisfactory performance for crop classification that can be run without expensive hardware? If so, which models are most suitable?}
+    
+    \begin{itemize}[label=$\hookrightarrow$, leftmargin=2em, topsep=0.5em]
+        \item \textbf{Answer:}
+        Yes, such a pipeline seems possible. The SITS download method presented shifts most of the processing cost to the server, allowing the use of cloud solutions like GEE on modest hardware. Regarding the cost of the models, although due to time and research scope constraints their memory size was not explored, all are capable of being fine-tuned on a modest GPU (in some of our tests, we used an Nvidia RTX 5070 TI 16GB). Regarding which model to choose, two stood out: SITS-BERT++ and Mamba. The former presented slightly higher metrics than the latter, which in turn shows linear processing and memory costs instead of the quadratic cost of the former, proving to be a balanced option in terms of cost metrics.
+    \end{itemize}
+
+    \item \textbf{Is it possible to achieve satisfactory performance for crop classification using only public sensors?}
+    
+    \begin{itemize}[label=$\hookrightarrow$, leftmargin=2em, topsep=0.5em]
+        \item \textbf{Answer:}
+        It appears possible to generate good ranking metrics from public missions. However, further studies with comparative tests against private missions are needed, which can be done using some publicly available datasets.
+    \end{itemize}
+
+    \item \textbf{Is it possible to improve confidence estimation or detect model anomalies - differ between right and wrong predictions - through generative models on embeddings, surpassing established baselines such as ConfidNet \citep{corbiere2019addressing} in the task of fault prediction?}
+    
+    \begin{itemize}[label=$\hookrightarrow$, leftmargin=2em, topsep=0.5em]
+        \item \textbf{Answer:}
+        It is indeed possible to detect anomalies in the model's prediction time using analysis methods on the embeddings generated during prediction, such as ORDER, generating a visually greater differentiation between correct and incorrect predictions than the ConfidNet baseline or the model itself through MCP. For confidence estimation, the ConfidNet baseline proved to be equal to or even worse visually than the model itself through MCP. It seems possible to create a confidence estimate with ORDER due to the good behavior of the predicted scores, however this was not done and could be done in future work.
+    \end{itemize}
+
+\end{enumerate}
+
+Future work could expand the pipeline using more data, whether more spatial statistics for each plot – beyond the median – or the incorporation of data from other sensors such as radars (for example, Sentinel 1 or PalSAR). Another possibility is the incorporation of auxiliary data, such as climate or soil information, from public models/sources. Furthermore, sacrificing some scalability, it would be interesting to explore DL architectures that incorporate spatial information, transforming the classification pipeline into semantic segmentation of SITS images, including the possibility of creating embedding rasters, which can act as data compression for downstream models of other agricultural tasks. To address current limitations, future studies should also explore the use of the \ac{ORDER} framework to proactively clean datasets prior to transfer learning, such as when adapting models trained on Texas data to California environments. Finally, transforming the \ac{ORDER} anomaly outputs into a calibrated confidence score—utilizing techniques like quantile mapping or linear regression—represents a highly valuable next step to better quantify predictive uncertainty and increase the operational reliability of the pipeline.

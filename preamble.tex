@@ -1,0 +1,152 @@
+%Arquivo com ajustes padrões para gerar slides no beamer com as cores e logo da UFV.
+
+\usetheme{CambridgeUS}
+\usepackage[T1]{fontenc}      %caracteres corretos na saída em pdf
+\usepackage[utf8]{inputenc}   % fontes com acentos
+% \usepackage[brazil]{babel}    % português do Brasil.
+\usepackage{lmodern}
+\usepackage{url}
+
+\usepackage{csquotes}
+\usepackage{booktabs}
+
+\usepackage{listings} % Para exibir codigo fonte
+\usepackage{lstautogobble}
+\usepackage[scaled]{beramono} %fonte de tamanho fixo mais bonita para o código-fonte nos listings
+\usepackage{textcomp} % Ajeitar os apóstrofos no código fonte para ficarem retos
+
+\usepackage[backend=biber,style=numeric, citestyle=ieee]{biblatex}
+% \usepackage[url=false,isbn=false,backend=biber]{biblatex}
+% \usepackage[style=abnt, url=false, isbn=false,indent, noslsn,backend=biber]{biblatex}
+\addbibresource{refs.bib}
+
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+
+\usepackage[normalem]{ulem}% usar diferentes tipos de underline
+    %\uline{important} underlined text
+    %\uuline{urgent} double-underlined
+    %\uwave{boat} wavy underline
+    %\sout{wrong} line struck
+    %\xout{removed} marked
+    %\dashuline{dashing} dashed underline
+    %\dotuline{dotty} dotted underline
+
+
+\graphicspath{{logos_ufv/}}
+
+%Logo da UFV
+\titlegraphic{\includegraphics[width=3.5cm]{logos_ufv/LogoSIN.png}}
+
+\newcommand{\transparente}{\setbeamercovered{transparent}}
+\newcommand{\invisivel}{\setbeamercovered{invisible}}
+\newcommand{\destacar}[1]{\alert{#1}}
+
+
+%Retirar ícones das bibliografias
+\setbeamertemplate{bibliography item}{-}
+%Notas de rodapé com fonte menor
+\setbeamerfont{footnote}{size=\tiny}
+%retirar os controles de navegação que ficam no canto inferior direito
+\setbeamertemplate{navigation symbols}{}
+
+%Cores do logo da UFV
+\definecolor{ufvred}{RGB}{124,26,29}
+\definecolor{ufvyellow}{RGB}{203,176,49}
+\definecolor{DarkGray}{RGB}{118,118,118}
+\definecolor{LightGray}{RGB}{214,214,206}
+
+% format de círculo flat para os bullets...
+\setbeamertemplate{itemize items}[circle]
+% .. vermelhos
+\usecolortheme[named={ufvred}]{structure}
+
+%ajusta as cores dos elementos dos slides
+% cor do título
+\setbeamercolor{frametitle}{fg=ufvred}
+\setbeamercolor{title}{fg=ufvred}
+\setbeamercolor{subtitle}{fg=ufvred}
+
+% parte do rodapé
+\setbeamercolor{author in head/foot}{bg=black}
+\setbeamercolor{title in head/foot}{bg=ufvred, fg=white}
+\setbeamercolor{date in head/foot}{bg=ufvyellow, fg=black}
+\setbeamercolor{section in head/foot}{bg=black, fg=white}
+\setbeamercolor{subsection in head/foot}{bg=black, fg=white}
+
+%=====================
+% cores dos blocos
+%=====================
+% block
+% \setbeamercolor{block title}{fg=ufvred}
+% exampleblock
+\setbeamercolor{block title}{fg=white, bg=DarkGray}
+\setbeamercolor{block body}{bg=LightGray}
+% \AtBeginEnvironment{exampleblock}{\setbeamercolor{itemize item}{fg=ufvred}}
+
+% alertbox
+\setbeamercolor{block title alerted}{fg=ufvred, bg=ufvyellow}
+\setbeamercolor{block body alerted}{bg=ufvyellow!50}
+
+% % block
+% \setbeamercolor{block title}{fg=ufvred}
+% % exampleblock
+% \setbeamercolor{block title example}{fg=white, bg=DarkGray}
+% \setbeamercolor{block body example}{bg=LightGray}
+% \AtBeginEnvironment{exampleblock}{\setbeamercolor{itemize item}{fg=ufvred}}
+
+% % alertbox
+% \setbeamercolor{block title alerted}{fg=ufvred, bg=ufvyellow}
+% \setbeamercolor{block body alerted}{bg=ufvyellow!50}
+
+%Tamanho da fonte das referências
+\renewcommand*{\bibfont}{\footnotesize}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+
+%======================
+% Definições para exibição de código-fonte
+%======================
+
+\lstdefinestyle{SQL-Smarzaro}{%
+	language=SQL,
+	showspaces=false,
+	basicstyle=\small\ttfamily,
+	%    numbers=left,
+	numberstyle=\tiny,
+	commentstyle=\color{dkgreen},
+	upquote=true,
+	breaklines=true,
+	morekeywords={*,REFERENCES,RENAME,TO,DATABASE,SCHEMA,IF,USE,REPLACE,REFRESH,MATERIALIZED,
+		BEFORE, AFTER, INSTEAD, OF, FOR, EACH, ROW, DO, STATEMENT, RULE, FUNCTION, PROCEDURE...},
+	keywordstyle=\color{blue}\bfseries,
+	%frame=ltrb,
+	backgroundcolor=\color{gray!20},
+	inputencoding=latin1,
+	extendedchars=true,
+	autogobble=true,
+    escapeinside={(*}{*)},          % if you want to add LaTeX within your code
+}
+
+\lstdefinestyle{TeX-Smarzaro}{language=[LaTeX]TeX,
+	morekeywords={frame, fragile},
+	keywordstyle=\color{blue}\bfseries,}
+	
+\lstset{style=SQL-Smarzaro,
+	literate=
+	{á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+	{Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+	{à}{{\`a}}1 {è}{{\`e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
+	{À}{{\`A}}1 {È}{{\'E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
+	{ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+	{Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+	{â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
+	{Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
+	{Ã}{{\~A}}1 {ã}{{\~a}}1 {Õ}{{\~O}}1 {õ}{{\~o}}1
+	{œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
+	{ű}{{\H{u}}}1 {Ű}{{\H{U}}}1 {ő}{{\H{o}}}1 {Ő}{{\H{O}}}1
+	{ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {å}{{\r a}}1 {Å}{{\r A}}1
+	{€}{{\euro}}1 {£}{{\pounds}}1 {«}{{\guillemotleft}}1
+	{»}{{\guillemotright}}1 {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?`}}1
+}
+
+

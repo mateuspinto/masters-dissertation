@@ -1,0 +1,176 @@
+\documentclass[
+	12pt,
+	openright,
+	oneside,
+	a4paper,
+    sumario=tradicional,
+    brazil,
+	english,
+	]{abntex2}
+
+\usepackage{adjustbox}
+\usepackage{abntex2-UFV}
+\usepackage[sfdefault]{atkinson}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{indentfirst}
+\usepackage{graphicx}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{pdfpages}
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\usepackage{listings}
+\usepackage{subcaption}
+\usepackage{caption}
+\usepackage{xurl}
+\DisemulatePackage{setspace}
+\usepackage{setspace}
+\usepackage[linesnumbered,lined,commentsnumbered,ruled,vlined,portuguese]{algorithm2e}
+\usepackage{bm}
+\usepackage{multirow}
+\usepackage{lipsum}
+\usepackage{tikz}
+\usepackage[authoryear,round]{natbib}
+\usepackage{hyperref}
+\usepackage{acronym}
+\usepackage{ragged2e}
+\usepackage{pdflscape}
+\usepackage{float}
+
+\bibliographystyle{abbrvnat}
+
+\SetKwFor{ParaCada}{para cada}{fa\c{c}a}{fim para}
+\hyphenation{fe-de-ral}
+\hyphenation{scientiae}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+  backgroundcolor=\color{backcolour},   
+  commentstyle=\color{codegreen},
+  keywordstyle=\color{magenta},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codepurple},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=true,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2
+}
+
+\lstset{style=mystyle}
+\renewcommand{\lstlistingname}{Code fragment}
+\renewcommand{\lstlistlistingname}{List of code fragments}
+
+\titulo{\normalsize{\textbf{A Lightweight Pipeline for Parcel-level Crop Classification via Data Centrism and Self-Supervision}}}
+
+\autor{\normalsize{\textbf{Mateus Pinto da Silva}}}
+\local{\normalsize{\textbf{Viçosa - Minas Gerais}}}
+\data{\normalsize{\textbf{2026}}}
+\orientador{Hugo Neves de Oliveira}
+\coorientador{Jefersson Alex dos Santos}
+\instituicao{Universidade Federal de Viçosa}
+\curso{Pós-graduação em Ciência da Computação}
+\membrobancaA{Membro 1}
+\membrobancaB{Membro 2}
+\databanca{\today}
+
+\preambulo{Thesis submitted to the Federal University of Viçosa as part of the requirements of the Graduate Program in Computer Science for the attainment of the degree of \textit{Magister Scientiae}.}
+
+\makeatletter
+\hypersetup{
+		pdftitle={\@title},
+		pdfauthor={\@author},
+    	pdfsubject={\imprimirpreambulo},
+	    pdfcreator={LaTeX with abnTeX2},
+		colorlinks=true,
+    	linkcolor=black,
+    	citecolor=magenta,
+    	filecolor=magenta,
+		urlcolor=magenta,
+		bookmarksdepth=4
+}
+\makeatother
+
+\begin{document}
+
+\include{other/colors}
+\include{other/commands_tikz}
+
+\newcommand{\fignote}[1]{%
+    \par
+    \centering
+    \small
+    \begin{minipage}{0.9\linewidth}
+        \justifying #1
+    \end{minipage}
+    \par
+    \vspace{6pt}
+}
+
+\frenchspacing
+
+\pretextual
+
+{
+    \singlespacing
+    \imprimirfolhaderosto
+    \clearpage
+    \pagenumbering{arabic}
+}
+
+\includepdf[pages=-]{pdfs/ficha-catalografica-branca.pdf}
+
+\imprimirfolhadeaprovacao
+
+\selectlanguage{english}
+
+\include{other/thanks}
+\include{other/epigraph}
+
+\include{other/abstract}
+
+\cleardoublepage
+\pdfbookmark[0]{\listfigurename}{lof}
+\listoffigures*
+\cleardoublepage
+
+\pdfbookmark[0]{\listtablename}{lot}
+\listoftables*
+\cleardoublepage
+
+\include{other/abbreviations}
+
+\pdfbookmark[0]{\contentsname}{toc}
+\tableofcontents*
+\cleardoublepage
+
+\textual
+
+\include{sections/1_introduction}
+\include{sections/2_0_theoretical_background}
+\include{sections/3_related_work}
+\include{sections/4_methodology_datasets}
+\include{sections/5_methodology_models}
+\include{sections/6_experiments}
+\include{sections/7_results_and_discussion}
+\include{sections/8_conclusion}
+
+\postextual
+
+\bibliography{references}
+
+\end{document}

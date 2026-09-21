@@ -1,0 +1,19 @@
+\begin{resumo}[Abstract]
+ \begin{otherlanguage*}{english}
+   %\noindent
+
+
+\vspace{\onelineskip}
+
+%\onehalfspacing
+\setstretch{1.5}
+{
+This dissertation proposes and benchmarks a lightweight pipeline for large-scale parcel-level crop classification using time-series data. The key contributions include a scalable SITS download strategy compiled into a open source Python library, a novel parcel-level crop classification dataset construction methodology - including three generated datasets, two for the USA States of Texas and California and a subcontinental dataset encompassing agriculture from Brasil -, a benchmark of supervised classification techniques tested under varied data availability scenarios and a novel anomaly detection methodology \textbf{ORDER} (\textbf{O}open \textbf{R}ecognition for \textbf{D}iscriminative \textbf{E}rror \textbf{R}ebuttal), capable of detecting prediction anomalies of models without requiring retraining. The methodology combines plot design and cropland rasters, basic spectral descriptive statistics extraction from images using cloud computing, state-of-art and consolidated models and SSL pre-training strategies and a reinvention of a classic model for anomaly detection. We benchmarked our pipeline with the three mentioned datasets, builded upon Varda Global FieldID public parcel delineation and USDA NASS Cropland Data and Mapbiomas Brasil public crop class informations. To validate the methodology, we tested the shallow Support Vector Machine, Random Forest, and Multi Layer Perceptron models, the consolidated SITS-BERT and SITS-BERT++ transformer-based models in the literature, and the SITS-CNN (based on the modern ConvNeXt) and SITS-Mamba (based on the Mamba post-transformer model) models adapted by us, with pre-training using Masked Modeling, Momentum Contrast, Fast Siamese, and PMSN. Experimental results show that deep models, such as SITS-BERT++ and a Mamba model proposed by us, outperform Random Forest and Support Vector Machine approaches. The Mamba model, for instance, achieves an Weighted F1 score of 85.0\% in comparison with 77.7\% of a SVM model in the Brazil dataset. We show that SSL pretraining leads to better classification metrics in the finetuned models when compared to random initialization, specially in few-shot cenarios - SITS-BERT++ achieves a near 20\% Weighted F1 Score increase in Brazil when finetuned with only 1\% labeled samples. The ORDER anomaly detection methodology proved promising, generating increased classification metrics in all experiments with deep models, such as a 0.4\% increase in SITS-BERT++ trained from scratch in California dataset, working even when the model classification metrics are already high, a common issue in confidence estimation methods.
+}
+
+   \vspace{\onelineskip}
+
+   \noindent
+   \textbf{Keywords}: Crop Classification 1. Satellite Image Time Series 2. Anomaly Detection 3. Self-Supervised Learning 4. Open-set Recognition 5.
+ \end{otherlanguage*}
+\end{resumo}

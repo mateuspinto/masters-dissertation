@@ -1,0 +1,116 @@
+%---------------------------------------------------
+% Template para slides com as cores da UFV
+% Autor.: Rodrigo Smarzaro (smarzaro@ufv.br)
+% Versão: 1.0 
+%---------------------------------------------------
+% As configurações estão no documento preambulo.tex
+% Coloque todas as figuras na pasta \Figuras
+% Deve ser compilado com pdfLaTeX + Biber
+%---------------------------------------------------
+
+\documentclass[handout]{beamer}
+
+
+
+\usepackage{multirow}
+\usepackage{subcaption}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsbsy}
+\usepackage{graphicx}
+\usepackage{xfrac}
+
+\usepackage{xcolor}
+
+\usepackage{cancel}
+
+\usepackage{overpic}
+
+\usepackage{sidecap}
+
+%%%%%% Fonte amigável para disléxicos
+\usepackage[sfdefault]{atkinson}
+\usepackage[T1]{fontenc}
+
+%%%%%% Texto justificado ao invés de alinhado a esquerda
+\usepackage{etoolbox}
+\usepackage{ragged2e}
+\let\raggedright\justifying
+
+
+\newcommand\todo[1]{{\textcolor{red}{#1}}}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+%carrega os ajustes padrões para os slides
+\input{preamble}
+
+\title{MSc Dissertation}
+\subtitle{A Lightweight Pipeline for Parcel-level Crop Classification\\via Data Centrism and Self-Supervision}
+\author[Mateus Pinto da Silva]{\texorpdfstring{\logo \\ Mateus Pinto da Silva\\ \texttt{mateus.p.silva@ufv.br}}{Mateus Pinto da Silva}}
+\institute[DPI - UFV]{Programa de Pós-Graduação em Ciência da Computação\\Universidade Federal de Viçosa}
+\date{February 25, 2026}
+
+\newcommand{\currprop}{0.6\textheight}
+
+\begin{document}
+
+% Para controlar se os tópicos aparecem com transparência ou invisível
+% \transparente
+\invisivel
+
+\AtBeginSection[]
+{
+    \begin{frame}<beamer>
+        \frametitle{Summary}
+        \tableofcontents[currentsection]
+    \end{frame}
+}
+
+%Slide de Título
+\frame{\titlepage}
+
+\input{slides/1_introduction}
+\input{slides/2_theoretical_background}
+\input{slides/3_related_work}
+\input{slides/4_datasets}
+\input{slides/5_models}
+\input{slides/6_experimental_setup}
+\input{slides/7_results}
+\input{slides/8_conclusion}
+\input{slides/9_contributions}
+
+\begin{frame}
+    % --- Logos das Instituições Financiadoras ---
+    \begin{center}
+        % Ajuste o 'height' para o tamanho ideal e o nome dos arquivos das imagens
+        \includegraphics[height=1.2cm]{logos_institutos/logo_ibge.png} \hspace{0.5cm}
+        \includegraphics[height=1.2cm]{logos_institutos/logo_mavilab.png} \hspace{0.5cm}
+        \includegraphics[height=1.2cm]{logos_institutos/logo_patreo.png} \hspace{0.5cm}
+        \includegraphics[height=1.2cm]{logos_institutos/logo_serrapilheira.png}
+    \end{center}
+    
+    \vspace{0.5cm} % Espaço entre os logos e o "Thank You!"
+    
+    % --- Agradecimento e Dados ---
+    \begin{center}
+        \LARGE{\textbf{Thank You!}} \\
+        \vspace{0.8cm}
+        \large{Mateus Pinto da Silva} \\
+        \vspace{0.2cm}
+        \normalsize{\textit{Universidade Federal de Viçosa (UFV)}} \\
+        \vspace{0.8cm}
+        \normalsize{\textbf{Questions?}}
+    \end{center}
+    
+    \vfill
+    
+    \begin{flushleft}
+        \tiny{Contact: mateus.p.silva@ufv.br \\
+        Registration Code: EF3489}
+    \end{flushleft}
+\end{frame}
+
+\end{document}

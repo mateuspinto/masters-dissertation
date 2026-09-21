@@ -1,0 +1,19 @@
+\begin{frame}{Crop Mapping: Classification of Crops}
+    \begin{block}{Two Main Sub-Applications}
+        \begin{itemize}
+            \item \textbf{Post-harvest classification:} Uses the complete time series (more common and simpler).
+                \pause
+                \begin{itemize}
+                    \item \textbf{CNNs} remain highly used (e.g., 3D CNN, CNNs with Attention).
+                    \item \textbf{MIM/Generative SSL} (SITS-BERT, SITS-Former) and \textbf{Contrastive SSL} (SITS-MoCo) strategies on Transformers achieve SOTA results by reconstructing masked time series.
+                \end{itemize}
+            \pause
+            \item \textbf{In-season classification:} Produces results \textbf{before} harvest (more complex, economically desirable).
+                \pause
+                \begin{itemize}
+                    \item Focus on \textbf{early recognition} using CNNs and recurrent models (e.g., ConvLSTM, 3D CNN over time).
+                    \item Specialized techniques like an \textbf{Earliness-Rewarded Loss} are used to train models for early prediction.
+                \end{itemize}
+        \end{itemize}
+    \end{block}
+\end{frame}
